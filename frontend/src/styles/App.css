@@ -1,0 +1,98 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  display: block;
+}
+
+/* AUTH FORMS */
+.auth-form {
+  width: 400px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+}
+.input-container {
+  width: 100%;
+}
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  padding: 7px;
+  outline: none;
+}
+.checkbox-container input {
+  width: 50px;
+  cursor: pointer;
+}
+/* MAIN CARD */
+.card {
+  /* height: 600px;
+  width: 480px; */
+  display: flex;
+  flex-direction: column;
+  /* background-color: black; */
+  padding: 20px;
+  border: 2px solid grey;
+  border-radius: 12px;
+}
+
+/* .card img {
+  width: 100%;
+} */
+.card_photo {
+  width: 350px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card_carousel {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.carousel-btn {
+  font-size: 45px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.carousel-image {
+  height: 100%;
+}
+
+.card_buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.card_btn {
+  font-size: 35px;
+  background-color: transparent;
+  border: none;
+}
+.card_btn.dislike {
+  color: tomato;
+}
+.card_btn.like {
+  color: lawngreen;
+}
