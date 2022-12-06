@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import http from '../../plugins/http';
 
-function LoginForm({ setAuth }) {
+function LoginForm({ setAuth, setErrors }) {
   const usernameRef = useRef();
   const passwordRef = useRef();
   const stayLoggedRef = useRef();
@@ -19,6 +19,9 @@ function LoginForm({ setAuth }) {
 
     http.post(`${url}/auth/login`, loginData).then((data) => {
       console.log('login', data);
+      if (data.error) {
+        setErrors(data.data);
+      }
     });
   };
   return (
@@ -37,11 +40,17 @@ function LoginForm({ setAuth }) {
         <input ref={stayLoggedRef} type='checkbox' name='logged' />
       </div>
 
-      <p className='form-nav' onClick={() => setAuth('auth-reg')}>
+      <p
+        className='form-nav'
+        onClick={() => {
+          setAuth('auth-reg');
+          setErrors([]);
+        }}
+      >
         Do not have an account? Click here to Register.
       </p>
 
-      <button type='submit' className='form-btn' onSubmit={handleLogin}>
+      <button type='submit' className='form-btn' onClick={handleLogin}>
         Sign In
       </button>
     </form>

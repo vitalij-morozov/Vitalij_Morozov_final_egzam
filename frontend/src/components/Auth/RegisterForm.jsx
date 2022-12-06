@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import http from '../../plugins/http';
 
-function RegisterForm({ setAuth }) {
+function RegisterForm({ setAuth, setErrors }) {
   const usernameRef = useRef();
   const passOneRef = useRef();
   const passTwoRef = useRef();
@@ -21,11 +21,14 @@ function RegisterForm({ setAuth }) {
       password2: passTwoRef.current.value,
       gender: genderRef.current.value,
       city: cityRef.current.value,
-      age: ageRef.current.value,
+      age: +ageRef.current.value,
     };
 
     http.post(`${url}/auth/register`, registrationData).then((data) => {
       console.log(data);
+      if (data.error) {
+        setErrors(data.data);
+      }
     });
   };
 
@@ -54,20 +57,26 @@ function RegisterForm({ setAuth }) {
         </select>
       </div>
       <div className='input-container'>
-        <label htmlFor='gender'>Repeat Password: </label>
+        <label htmlFor='gender'>Gender: </label>
         <select ref={genderRef} name='gender'>
           <option value='male'>Male</option>
           <option value='female'>Female</option>
         </select>
       </div>
       <div className='input-container'>
-        <label htmlFor='age'>Repeat Password: </label>
+        <label htmlFor='age'>Full Age: </label>
         <input ref={ageRef} type='number' name='age' placeholder='Enter your full age' />
       </div>
-      <p className='form-nav' onClick={() => setAuth('auth-login')}>
+      <p
+        className='form-nav'
+        onClick={() => {
+          setAuth('auth-login');
+          setErrors([]);
+        }}
+      >
         Already have an account? Click here to Sign In.
       </p>
-      <button type='submit' className='form-btn' onSubmit={handleRegistration}>
+      <button type='submit' className='form-btn' onClick={handleRegistration}>
         Register
       </button>
     </form>

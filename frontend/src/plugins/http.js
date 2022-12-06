@@ -13,6 +13,15 @@ const http = {
       console.log(error.message);
     }
   },
+  get: async (url) => {
+    try {
+      const response = await fetch(url);
+      const dataInJs = await response.json();
+      return dataInJs;
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 };
 
 export default http;

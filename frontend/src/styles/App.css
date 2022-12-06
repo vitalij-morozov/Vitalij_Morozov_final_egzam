@@ -59,11 +59,29 @@ header .container {
 .auth-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
+
+  width: 100%;
+  position: relative;
+}
+
+.auth-error {
+  padding: 25px;
+  background-color: tomato;
+}
+.error-container {
+  position: absolute;
+  width: 250px;
+  right: 10%;
+  bottom: 17.3%;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 .auth-form {
-  width: 400px;
-  padding: 25px 20px;
+  width: 450px;
+  padding: 25px 30px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -126,7 +144,6 @@ header .container {
   cursor: pointer;
 }
 .form-btn {
-  margin-top: 8px;
   padding: 6px 17px;
   text-transform: uppercase;
   font-weight: bold;
@@ -139,6 +156,7 @@ header .container {
   background-color: #083852;
   color: #c2ded1;
 }
+
 /* MAIN CARD */
 .card {
   /* height: 600px;
@@ -205,4 +223,8 @@ header .container {
 }
 .card_btn.like {
   color: lawngreen;
+}
+
+.selected-btn {
+  border-color: red;
 }

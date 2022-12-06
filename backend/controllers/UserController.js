@@ -2,31 +2,40 @@ const userSchema = require('../schemas/UserSchema');
 const bcrypt = require('bcrypt');
 const { uid } = require('uid');
 const jwt = require('jsonwebtoken');
-const UserSchema = require('../schemas/UserSchema');
 
 const registerUser = async (req, res) => {
-  try {
-    const { username, passwordOne: password, city, age, gender } = req.body;
-    const hashedPass = await bcrypt.hash(password, 10);
-    const userId = uid(20);
-    const userObject = {
-      username,
-      password: hashedPass,
-      images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png'],
-      likes: [],
-      info: { city, age, gender },
-      secret: userId,
-    };
-    const newUser = new UserSchema(userObject);
-    await newUser.save();
-    const token = jwt.sign(username, newUser, {
-      expiresIn: 60,
-    });
+  const { username, password1: password, city, age, gender } = req.body;
+  const hashedPass = await bcrypt.hash(password, 10);
+  const userId = uid(20);
+  const userObject = {
+    username,
+    password: hashedPass,
+    images: [],
+    likes: [],
+    info: { city, age, gender },
+    secret: userId,
+  };
+  const newUser = new userSchema(userObject);
+  console.log('newUser ===', newUser);
+  await newUser.save();
+  console.log('userObject ===', userObject);
+  // const token = jwt.sign(
+  //   {
+  //     alg: 'secretttt',
+  //     typ: 'JWT',
+  //   },
+  //   { user: newUser },
+  //   {
+  //     expiresIn: 24 * 60,
+  //   }
+  // );
 
-    return res.status(201).json({ error: false, message: 'Registration is ok', data: { userId, username, token } });
-  } catch (error) {
-    return res.status(400).json({ error: true, message: 'Error in user registration', data: error });
+  if (!newUser) {
+    return res.status(400).json({ error: true, message: 'Error in user registration', data: null });
   }
+  return res
+    .status(201)
+    .json({ error: false, message: 'Registration is ok', data: { userId: newUser.secret, username } });
 };
 
 const loginUser = async (req, res) => {
@@ -55,10 +64,32 @@ const updateUserImages = async (req, res) => {
   } catch (error) {}
 };
 
-const updateUserLikes = async (req, res) => {};
+const getFilteredUsers = async (req, res) => {
+  const { filteredCity, filteredGender, filteredAge } = req.body;
+
+  const filteredUsers = await userSchema.find({
+    city: filteredCity,
+    gender: filteredGender,
+    age: filteredAge,
+    images: { $size: 2 },
+  });
+
+  if (!filteredUsers) return res.status(400).json({ error: true, message: 'No users found' });
+  return res.status(200).json({ error: false, message: 'Ok', data: filteredUsers });
+};
+
+const updateUserLikes = async (request) => {
+  const { username, userWhoLiked } = request;
+
+  const update = await userSchema.findOneAndUpdate({ username: username }, { $push: { likes: userWhoLiked } });
+
+  return update;
+};
 
 module.exports = {
   registerUser,
   loginUser,
   updateUserImages,
+  getFilteredUsers,
+  updateUserLikes,
 };
