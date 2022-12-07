@@ -50,7 +50,20 @@ const loginValidation = async (req, res, next) => {
   }
 };
 
+const imageUpdateValidation = async (req, res) => {
+  const joiSchema = Joi.object({
+    images: Joi.required(),
+  });
+  try {
+    await joiSchema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    return res.status(400).json({ error: true, message: 'Field validation error', data: error.details });
+  }
+};
+
 module.exports = {
   registratioValidation,
   loginValidation,
+  imageUpdateValidation,
 };

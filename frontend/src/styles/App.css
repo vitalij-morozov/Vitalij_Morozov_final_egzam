@@ -54,6 +54,8 @@ header .container {
   background-color: #112b3c;
   color: #c2ded1;
   opacity: 0.8;
+  width: 55px;
+  height: 55px;
 }
 /* AUTH FORMS */
 .auth-container {
@@ -174,7 +176,7 @@ header .container {
   padding-left: 15px;
   margin: 10px 0;
 }
-.card_photo {
+.card_info {
   width: 350px;
   height: 500px;
   display: flex;
@@ -230,9 +232,63 @@ header .container {
 }
 
 /* ------PROFILE-------- */
+.profile_container {
+  width: 100%;
+  margin: 3% 10%;
+}
+.user_profile {
+  display: flex;
+  justify-content: space-between;
+  gap: 10%;
+  width: 90%;
+}
+.profile_form {
+  width: 400px;
+  background-color: #083852;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 15px;
+  gap: 15px;
+  color: #fff;
+}
+.profile_form input {
+  width: 100%;
+  padding: 6px;
+}
 .preview-container {
   display: flex;
-  width: 100%;
+  width: 400px;
   height: 400px;
   padding: 10px;
+}
+
+.profile_form-btn {
+  background-color: #89ccad;
+  border: 2px solid #89ccad;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #083852;
+}
+
+/* -----LIKES PAGE------ */
+.likes-page {
+  width: 100%;
+}
+.likes-toolbar {
+  display: flex;
+
+  width: 100%;
+}
+.likes-info {
+  width: 50%;
+  border-bottom: 2px solid #112b3c;
+  padding: 7px 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.like-page_selected {
+  color: #083852;
+  background-color: #89ccad;
 }

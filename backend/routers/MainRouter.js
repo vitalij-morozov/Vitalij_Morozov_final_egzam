@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { registratioValidation, loginValidation } = require('../middleware/validation');
+const { registratioValidation, loginValidation, imageUpdateValidation } = require('../middleware/validation');
 
 const {
   registerUser,

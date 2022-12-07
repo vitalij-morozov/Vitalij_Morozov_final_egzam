@@ -12,6 +12,7 @@ const registerUser = async (req, res) => {
     password: hashedPass,
     images: [],
     likes: [],
+    liked: [],
     info: { city, age, gender },
     secret: userId,
   };
@@ -61,7 +62,7 @@ const updateUserImages = async (req, res) => {
     const { userId } = req.params;
     // const images = req.body;
     console.log('req.body ===', req.body);
-    const user = await userSchema.findOneAndUpdate({ secret: userId }, { $set: { images: req.body } });
+    const user = await userSchema.findOneAndUpdate({ secret: userId }, { $push: { images: req.body.image } });
     console.log('user ===', user);
     return res.status(201).json({ error: false, message: 'Images updated successfully' });
   } catch (error) {
@@ -78,6 +79,7 @@ const getFilteredUsers = async (req, res) => {
     age: filteredAge,
     images: { $size: 2 },
   });
+  console.log('filteredUsers ===', filteredUsers);
 
   if (!filteredUsers) return res.status(400).json({ error: true, data: [{ message: 'No users found' }] });
   return res.status(200).json({ error: false, message: 'Ok', data: filteredUsers });
@@ -94,10 +96,17 @@ const getUserById = async (req, res) => {
 };
 
 const updateUserLikes = async (request) => {
-  const { username, userWhoLiked } = request;
+  const { likeUsername, userWhoLiked } = request;
 
-  const update = await userSchema.findOneAndUpdate({ username: username }, { $push: { likes: userWhoLiked } });
+  const update = await userSchema.findOneAndUpdate({ username: likeUsername }, { $push: { likes: userWhoLiked } });
 
+  return update;
+};
+
+const updateUserLiked = async (request) => {
+  const { likedUsername, likedUser } = request;
+
+  const update = await userSchema.findOneAndUpdate({ username: likedUsername }, { $push: { liked: likedUser } });
   return update;
 };
 
@@ -107,5 +116,6 @@ module.exports = {
   updateUserImages,
   getFilteredUsers,
   updateUserLikes,
+  updateUserLiked,
   getUserById,
 };

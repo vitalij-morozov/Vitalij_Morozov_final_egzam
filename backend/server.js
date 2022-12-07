@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const socketIo = require('socket.io');
 
+const socketRouter = require('./modules/socketRouter');
+
 const app = express();
 
 const router = require('./routers/MainRouter');
@@ -34,6 +36,8 @@ const io = socketIo(http, {
     origin: 'http://localhost:3000',
   },
 });
+
+socketRouter(io);
 
 app.set('socketIo', io);
 

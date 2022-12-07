@@ -6,6 +6,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   images: { type: Array, required: true },
   likes: { type: Array, required: true },
+  liked: { type: Array, required: true },
   info: { type: Object, required: true },
   secret: { type: String, required: true },
 });

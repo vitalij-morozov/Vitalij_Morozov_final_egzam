@@ -5,9 +5,14 @@ function UserProfile({ user, images, setImages }) {
   return (
     user && (
       <div className='user_profile'>
-        <h2 className='profile_username'>{user.username}</h2>
-        <ProfileImageForm setImages={setImages} images={images} />
-        <ImagesPreview images={images} />
+        <div className='user-info'>
+          <h2 className='profile_username'>{user.username}</h2>
+          <ImagesPreview images={images} />
+        </div>
+
+        <div className='set-images'>
+          <ProfileImageForm setImages={setImages} images={images} />
+        </div>
       </div>
     )
   );
