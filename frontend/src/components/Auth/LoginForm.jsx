@@ -1,13 +1,20 @@
-import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import http from '../../plugins/http';
+import { setUser } from '../../store/generalStore';
 
 function LoginForm({ setAuth, setErrors }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const usernameRef = useRef();
   const passwordRef = useRef();
   const stayLoggedRef = useRef();
 
   const url = useSelector((state) => state.generalStore.baseURL);
+
+  const [stayLogged, setStayLogged] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,8 +29,17 @@ function LoginForm({ setAuth, setErrors }) {
       if (data.error) {
         setErrors(data.data);
       }
+      if (!data.error) {
+        dispatch(setUser(data.data.user));
+        sessionStorage.setItem('user', [data.data.userId, data.data.username]);
+        if (stayLogged) {
+          localStorage.setItem('user', [data.data.userId, data.data.username]);
+        }
+        navigate('/profile');
+      }
     });
   };
+  console.log('stayLogged ===', stayLogged);
   return (
     <form className='auth-form login'>
       <h2 className='auth-from_title'>Sign In</h2>
@@ -37,7 +53,7 @@ function LoginForm({ setAuth, setErrors }) {
       </div>
       <div className='checkbox-container'>
         <label htmlFor='logged'>Stay logged in?</label>
-        <input ref={stayLoggedRef} type='checkbox' name='logged' />
+        <input ref={stayLoggedRef} type='checkbox' name='logged' onChange={() => setStayLogged(!stayLogged)} />
       </div>
 
       <p

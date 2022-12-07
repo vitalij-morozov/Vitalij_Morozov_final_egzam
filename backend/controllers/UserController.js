@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
   // );
 
   if (!newUser) {
-    return res.status(400).json({ error: true, message: 'Error in user registration', data: null });
+    return res.status(400).json({ error: true, data: [{ message: 'Error in user registration' }] });
   }
   return res
     .status(201)
@@ -42,13 +42,13 @@ const loginUser = async (req, res) => {
   try {
     const { username } = req.body;
     const user = await userSchema.findOne({ username });
-    const token = jwt.sign(user, username, {
-      expiresIn: 60,
-    });
+    // const token = jwt.sign(user, username, {
+    //   expiresIn: 60,
+    // });
     const success = {
       error: false,
       message: 'Login successful',
-      data: { token, userId: user.secret, username: user.username },
+      data: { user, userId: user.secret, username: user.username },
     };
     return res.status(201).json(success);
   } catch (error) {
@@ -58,10 +58,15 @@ const loginUser = async (req, res) => {
 
 const updateUserImages = async (req, res) => {
   try {
-    const { username, images } = req.body;
-    const user = await userSchema.findOneAndUpdate({ username }, { $push: { images: images } });
+    const { userId } = req.params;
+    // const images = req.body;
+    console.log('req.body ===', req.body);
+    const user = await userSchema.findOneAndUpdate({ secret: userId }, { $set: { images: req.body } });
+    console.log('user ===', user);
     return res.status(201).json({ error: false, message: 'Images updated successfully' });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).json({ error: true, data: [{ message: 'Incorrect data', error_info: error }] });
+  }
 };
 
 const getFilteredUsers = async (req, res) => {
@@ -74,8 +79,18 @@ const getFilteredUsers = async (req, res) => {
     images: { $size: 2 },
   });
 
-  if (!filteredUsers) return res.status(400).json({ error: true, message: 'No users found' });
+  if (!filteredUsers) return res.status(400).json({ error: true, data: [{ message: 'No users found' }] });
   return res.status(200).json({ error: false, message: 'Ok', data: filteredUsers });
+};
+
+const getUserById = async (req, res) => {
+  const { userId } = req.params;
+
+  const user = await userSchema.findOne({ secret: userId });
+
+  if (!user) return res.status(400).json({ error: true, data: [{ message: 'User not found' }] });
+
+  return res.status(200).json({ error: false, data: user });
 };
 
 const updateUserLikes = async (request) => {
@@ -92,4 +107,5 @@ module.exports = {
   updateUserImages,
   getFilteredUsers,
   updateUserLikes,
+  getUserById,
 };

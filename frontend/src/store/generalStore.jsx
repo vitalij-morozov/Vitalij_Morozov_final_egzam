@@ -6,10 +6,14 @@ export const generalSlice = createSlice({
     baseURL: 'http://localhost:4000',
     user: null,
     filterSettings: null,
+    users: [],
   },
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    setUsers: (state, action) => {
+      state.users = action.payload;
     },
     setFilterSettings: (state, action) => {
       state.filterSettings = action.payload;
@@ -17,6 +21,6 @@ export const generalSlice = createSlice({
   },
 });
 
-export const { setUser, setFilterSettings } = generalSlice.actions;
+export const { setUser, setUsers, setFilterSettings } = generalSlice.actions;
 
 export default generalSlice.reducer;

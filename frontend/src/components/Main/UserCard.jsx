@@ -3,10 +3,10 @@ import React from 'react';
 import CardCarousel from './CardCarousel';
 import CardButtons from './CardButtons';
 
-function UserCard() {
+function UserCard({ user }) {
   return (
     <div className='card'>
-      <CardCarousel />
+      <CardCarousel user={user} />
       <CardButtons />
     </div>
   );

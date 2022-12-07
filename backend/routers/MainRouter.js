@@ -3,11 +3,20 @@ const router = express.Router();
 
 const { registratioValidation, loginValidation } = require('../middleware/validation');
 
-const { registerUser, loginUser, getFilteredUsers } = require('../controllers/UserController');
+const {
+  registerUser,
+  loginUser,
+  getFilteredUsers,
+  updateUserImages,
+  getUserById,
+} = require('../controllers/UserController');
 
 router.post('/auth/register', registratioValidation, registerUser);
 router.post('/auth/login', loginValidation, loginUser);
 
+router.patch('/users/:userId', updateUserImages);
+
+router.get('/users/:userId', getUserById);
 router.get('/filtered', getFilteredUsers);
 
 module.exports = router;

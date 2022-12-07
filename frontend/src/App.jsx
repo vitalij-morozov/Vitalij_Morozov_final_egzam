@@ -3,7 +3,7 @@ import './styles/App.css';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import io from 'socket.io-client';
 
@@ -16,10 +16,16 @@ import MainPage from './pages/MainPage';
 import AuthPage from './pages/AuthPage';
 import UserProfilePage from './pages/UserProfilePage';
 import FilterPage from './pages/FilterPage';
+import { setUser } from './store/generalStore';
 
 function App() {
   const filter = useSelector((state) => state.generalStore.filterSettings);
   const url = useSelector((state) => state.generalStore.baseURL);
+  const user = useSelector((state) => state.generalStore.user);
+
+  const dispatch = useDispatch();
+
+  // const navigate = useNavigate();
 
   const socket = io.connect(url + '/');
 
@@ -31,10 +37,23 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const localUser = localStorage.getItem('user');
+    const sessionUser = sessionStorage.getItem('user');
+
+    if (localUser || sessionUser) {
+      http.get(`${url}/users/${sessionUser.split(',')[0] || localUser.split(',')[0]}`).then((data) => {
+        console.log('getting user data ===', data);
+        dispatch(setUser(data.data));
+        console.log('sessionUser ===', sessionUser);
+      });
+    }
+  }, []);
+
   return (
     <div className='App'>
       <BrowserRouter>
-        <Header />
+        {user && <Header />}
         <Routes>
           <Route path='/' element={<MainPage />} />
           <Route path='/auth' element={<AuthPage />} />

@@ -1,8 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function Header() {
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.generalStore.user);
+
+  const { username } = user;
 
   return (
     <header>
@@ -12,9 +17,9 @@ function Header() {
         </h1>
 
         <div className='profile' onClick={() => navigate('/profile')}>
-          <h3 className='avatar'>T</h3>
+          <h3 className='avatar'>{username.charAt(0)}</h3>
 
-          <h2 className='header_username'>Testman</h2>
+          <h2 className='header_username'>{username}</h2>
         </div>
       </div>
     </header>

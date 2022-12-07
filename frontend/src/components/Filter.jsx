@@ -26,7 +26,7 @@ function Filter() {
     };
     console.log('settings ===', settings);
     dispatch(setFilterSettings(settings));
-    // navigate('/');
+    navigate('/');
   };
 
   return (
