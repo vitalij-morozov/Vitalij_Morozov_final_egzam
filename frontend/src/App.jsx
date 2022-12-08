@@ -4,7 +4,7 @@ import './styles/App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setUsers } from './store/generalStore';
+import { setUser, setUsers, setFilterSettings } from './store/generalStore';
 
 import io from 'socket.io-client';
 
@@ -18,6 +18,7 @@ import AuthPage from './pages/AuthPage';
 import UserProfilePage from './pages/UserProfilePage';
 import FilterPage from './pages/FilterPage';
 import LikesPage from './pages/LikesPage';
+import ChatPage from './pages/ChatPage';
 
 const socket = io.connect('http://localhost:4000/');
 
@@ -28,15 +29,14 @@ function App() {
 
   const dispatch = useDispatch();
 
-  // const navigate = useNavigate();
-
   console.log('filter ===', filter);
 
   useEffect(() => {
     if (filter) {
-      http.get(`${url}/filtered`).then((data) => {
+      http.get(`${url}/filtered/${filter.filterCity}&${filter.filterAge}&${filter.filterGender}`).then((data) => {
         console.log('filtered data', data);
-        dispatch(setUsers(data.data));
+        const excludedFilterData = data.data.filter((fUser) => !fUser.likes.includes(user.secret));
+        dispatch(setUsers(excludedFilterData));
       });
     }
   }, [filter]);
@@ -54,6 +54,14 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const settings = localStorage.getItem('filterSettings');
+    if (user && settings && !filter) {
+      dispatch(setFilterSettings(JSON.parse(settings)));
+      console.log('JSON.parse(settings) ===', JSON.parse(settings));
+    }
+  }, [user, dispatch]);
+
   return (
     <div className='App'>
       <BrowserRouter>
@@ -64,6 +72,7 @@ function App() {
           <Route path='/profile' element={<UserProfilePage socket={socket} />} />
           <Route path='/profile/likes' element={<LikesPage socket={socket} />} />
           <Route path='/filter' element={<FilterPage />} />
+          <Route path='/profile/chat/:toUser' element={<ChatPage socket={socket} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -17,6 +17,6 @@ router.post('/auth/login', loginValidation, loginUser);
 router.patch('/users/:userId', updateUserImages);
 
 router.get('/users/:userId', getUserById);
-router.get('/filtered', getFilteredUsers);
+router.get('/filtered/:city&:age&:gender', getFilteredUsers);
 
 module.exports = router;

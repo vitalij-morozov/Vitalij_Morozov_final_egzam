@@ -8,10 +8,10 @@ import { HiOutlineArrowSmLeft, HiOutlineArrowSmRight } from 'react-icons/hi';
 //   'https://images.unsplash.com/photo-1661961111184-11317b40adb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80',
 // ];
 
-function CardCarousel({ user }) {
+function CardCarousel({ user, type }) {
   const [counter, setCounter] = useState(0);
 
-  const { username, images, info } = user;
+  const { username, images, age, city } = user;
 
   const handlePhotoChangeLeft = () => {
     setCounter(counter - 1);
@@ -40,11 +40,12 @@ function CardCarousel({ user }) {
         <HiOutlineArrowSmLeft className='carousel-btn' onClick={handlePhotoChangeLeft} />
       </button>
       <div className='card_info'>
-        <h2 className='card_name'>{`${username}, ${info.age}, ${info.city}`}</h2>
+        <h2 className='card_name'>{`${username}, ${age}, ${city}`}</h2>
       </div>
       <button className='carousel-btn rigth-btn' onClick={handlePhotoChangeRight} title='Next Photo'>
         <HiOutlineArrowSmRight />
       </button>
+      {type === 'matches' && <button>Start Chat</button>}
     </div>
   );
 }

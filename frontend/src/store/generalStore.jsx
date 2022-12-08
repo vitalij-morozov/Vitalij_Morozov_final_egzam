@@ -8,7 +8,7 @@ export const generalSlice = createSlice({
     filterSettings: null,
     users: [],
     userLikes: [],
-    userLiked: [],
+    userMatches: [],
   },
   reducers: {
     setUser: (state, action) => {
@@ -23,12 +23,12 @@ export const generalSlice = createSlice({
     setUserLikes: (state, action) => {
       state.userLikes = action.payload;
     },
-    setUserLiked: (state, action) => {
-      state.userLiked = action.payload;
+    setUserMatches: (state, action) => {
+      state.userMatches = action.payload;
     },
   },
 });
 
-export const { setUser, setUsers, setFilterSettings, setUserLikes, setUserLiked } = generalSlice.actions;
+export const { setUser, setUsers, setFilterSettings, setUserLikes, setUserMatches } = generalSlice.actions;
 
 export default generalSlice.reducer;

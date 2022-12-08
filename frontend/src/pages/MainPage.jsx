@@ -8,6 +8,7 @@ function MainPage({ socket }) {
 
   const [counter, setCounter] = useState(0);
 
+  const user = useSelector((state) => state.generalStore.user);
   const users = useSelector((state) => state.generalStore.users);
   const filter = useSelector((state) => state.generalStore.filterSettings);
 
@@ -18,6 +19,8 @@ function MainPage({ socket }) {
   // };
 
   useEffect(() => {
+    if (!user) navigate('/auth');
+
     if (!filter) navigate('/filter');
   }, []);
   console.log('users ===', users);

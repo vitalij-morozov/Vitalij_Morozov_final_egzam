@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { HiOutlineArrowSmLeft, HiOutlineArrowSmRight } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
-function UserLikesCarouselCard({ user }) {
-  const { images, username, info } = user;
+function UserLikesCarouselCard({ user, type }) {
+  const { images, username, age, city, secret } = user;
+
+  const navigate = useNavigate();
 
   const [counter, setCounter] = useState(0);
 
@@ -26,16 +29,20 @@ function UserLikesCarouselCard({ user }) {
   };
 
   return (
-    <div className='carousel-card small' style={{ backgroundImage: `url(${images[counter]})` }}>
-      <button className='carousel-btn left-btn' onClick={handlePhotoChangeLeft} title='Previous Photo'>
-        <HiOutlineArrowSmLeft className='carousel-btn' onClick={handlePhotoChangeLeft} />
-      </button>
-      <div className='card_info'>
-        <h2 className='card_name'>{`${username}, ${info.age}, ${info.city}`}</h2>
+    <div className='card_carousel small' style={{ backgroundImage: `url(${images && images[counter]})` }}>
+      <div className='card_buttons'>
+        <button className='carousel-btn left-btn' onClick={handlePhotoChangeLeft} title='Previous Photo'>
+          <HiOutlineArrowSmLeft className='carousel-btn' onClick={handlePhotoChangeLeft} />
+        </button>
+        <button className='carousel-btn rigth-btn' onClick={handlePhotoChangeRight} title='Next Photo'>
+          <HiOutlineArrowSmRight />
+        </button>
       </div>
-      <button className='carousel-btn rigth-btn' onClick={handlePhotoChangeRight} title='Next Photo'>
-        <HiOutlineArrowSmRight />
-      </button>
+
+      <div className='card_info'>
+        <h2 className='card_name'>{`${username}, ${age}, ${city}`}</h2>
+      </div>
+      {type === 'matches' && <button onClick={() => navigate(`/profile/chat/${secret}`)}>Start Chatting</button>}
     </div>
   );
 }

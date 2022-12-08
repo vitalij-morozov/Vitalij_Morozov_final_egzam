@@ -7,7 +7,9 @@ const userSchema = new Schema({
   images: { type: Array, required: true },
   likes: { type: Array, required: true },
   liked: { type: Array, required: true },
-  info: { type: Object, required: true },
+  city: { type: String, required: true },
+  gender: { type: String, required: true },
+  age: { type: Number, required: true },
   secret: { type: String, required: true },
 });
 

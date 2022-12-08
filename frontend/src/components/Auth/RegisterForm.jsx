@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import http from '../../plugins/http';
 
 function RegisterForm({ setAuth, setErrors }) {
@@ -29,6 +30,7 @@ function RegisterForm({ setAuth, setErrors }) {
       if (data.error) {
         setErrors(data.data);
       }
+      setAuth('auth-login');
     });
   };
 

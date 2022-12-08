@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import LoginForm from '../components/Auth/LoginForm';
 import RegisterForm from '../components/Auth/RegisterForm';
 import AuthNavigation from '../components/Auth/AuthNavigation';
-import AuthErrorMessage from '../components/Auth/AuthErrorMessage';
+// import AuthErrorMessage from '../components/Auth/AuthErrorMessage';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,6 +28,10 @@ function AuthPage() {
 
   console.log('errors ===', errors);
 
+  useEffect(() => {
+    errors.forEach((err) => toast.warn(err.message));
+  }, [errors]);
+
   return (
     <div className='auth-container container page'>
       {auth === 'auth-reg' ? (
@@ -35,9 +41,7 @@ function AuthPage() {
       ) : (
         <AuthNavigation setAuth={setAuth} />
       )}
-      <div className='error-container'>
-        {errors && errors.length > 0 ? errors.map((err, i) => <AuthErrorMessage key={i} error={err} />) : ''}
-      </div>
+      <ToastContainer position='bottom-right' theme='dark' />
     </div>
   );
 }

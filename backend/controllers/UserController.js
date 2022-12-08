@@ -13,7 +13,9 @@ const registerUser = async (req, res) => {
     images: [],
     likes: [],
     liked: [],
-    info: { city, age, gender },
+    city: city,
+    gender: gender,
+    age: age,
     secret: userId,
   };
   const newUser = new userSchema(userObject);
@@ -64,20 +66,19 @@ const updateUserImages = async (req, res) => {
     console.log('req.body ===', req.body);
     const user = await userSchema.findOneAndUpdate({ secret: userId }, { $push: { images: req.body.image } });
     console.log('user ===', user);
-    return res.status(201).json({ error: false, message: 'Images updated successfully' });
+    return res.status(201).json({ error: false, data: user });
   } catch (error) {
     return res.status(400).json({ error: true, data: [{ message: 'Incorrect data', error_info: error }] });
   }
 };
 
 const getFilteredUsers = async (req, res) => {
-  const { filteredCity, filteredGender, filteredAge } = req.body;
-
+  const { city, age, gender } = req.params;
+  console.log('req.params ===', req.params);
   const filteredUsers = await userSchema.find({
-    city: filteredCity,
-    gender: filteredGender,
-    age: filteredAge,
-    images: { $size: 2 },
+    city: city,
+    gender: gender,
+    age: age,
   });
   console.log('filteredUsers ===', filteredUsers);
 
@@ -96,18 +97,29 @@ const getUserById = async (req, res) => {
 };
 
 const updateUserLikes = async (request) => {
-  const { likeUsername, userWhoLiked } = request;
+  const { userWhoLikes, userWhoIsLiked } = request;
 
-  const update = await userSchema.findOneAndUpdate({ username: likeUsername }, { $push: { likes: userWhoLiked } });
+  const updatedUser = await userSchema.findOneAndUpdate({ secret: userWhoIsLiked }, { $push: { likes: userWhoLikes } });
 
-  return update;
+  if (!updatedUser) return { error: true, data: [{ message: 'Failed to update user likes' }] };
+
+  return { error: false, data: updatedUser };
 };
 
 const updateUserLiked = async (request) => {
-  const { likedUsername, likedUser } = request;
+  const { userWhoLikes, userWhoIsLiked } = request;
+  console.log('request ===', request);
+  const updatedUser = await userSchema.findOneAndUpdate({ secret: userWhoLikes }, { $push: { liked: userWhoIsLiked } });
+  if (!updatedUser) return { error: true, data: [{ message: 'Failed to update user' }] };
+  return { error: false, data: updatedUser };
+};
 
-  const update = await userSchema.findOneAndUpdate({ username: likedUsername }, { $push: { liked: likedUser } });
-  return update;
+const getUserLiked = async (request) => {
+  const likedUsers = await userSchema.find({ secret: { $in: request } });
+  console.log('likedUsers ===', likedUsers);
+  if (!likedUsers) return { error: true, data: [{ message: 'liked users not found' }] };
+
+  return { error: false, data: likedUsers };
 };
 
 module.exports = {
@@ -118,4 +130,5 @@ module.exports = {
   updateUserLikes,
   updateUserLiked,
   getUserById,
+  getUserLiked,
 };

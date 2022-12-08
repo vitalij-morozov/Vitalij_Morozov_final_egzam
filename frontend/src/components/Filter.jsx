@@ -26,14 +26,17 @@ function Filter() {
     };
     console.log('settings ===', settings);
     dispatch(setFilterSettings(settings));
+    localStorage.removeItem('filterSettings');
+    localStorage.setItem('filterSettings', JSON.stringify(settings));
     navigate('/');
   };
 
   return (
     <form className='filter-form'>
+      <h2 className='form-title'>Filter</h2>
       <div className='input-container'>
-        <label htmlFor='city'>Select City: </label>
-        <select ref={cityRef} name='city'>
+        <label htmlFor='filter-city'>Select City: </label>
+        <select ref={cityRef} name='city' id='filter-city'>
           <option value='vilnius'>Vilnius</option>
           <option value='kaunas'>Kaunas</option>
           <option value='klaipeda'>Klaipeda</option>
@@ -41,8 +44,8 @@ function Filter() {
         </select>
       </div>
       <div className='input-container'>
-        <label htmlFor=''>Select Gender: </label>
-        <div className='select-gender'>
+        <label htmlFor='filter-gender'>Select Gender: </label>
+        <div className='select-gender' id='filter-gender'>
           {genders.map((gender, i) => (
             <button
               key={i}
