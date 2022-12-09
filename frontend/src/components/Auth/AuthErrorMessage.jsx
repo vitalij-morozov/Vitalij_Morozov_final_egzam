@@ -1,7 +1,15 @@
 import React from 'react';
 
-function AuthErrorMessage({ error }) {
-  return <p className='auth-error'>{error.message}</p>;
-}
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
+  function App(){
+    const notify = () => toast("Wow so easy!");
 
-export default AuthErrorMessage;
+    return (
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+      </div>
+    );
+  }

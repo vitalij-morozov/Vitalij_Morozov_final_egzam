@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import UserProfile from '../components/Profile/UserProfile';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import ProfileImageForm from '../components/Profile/ProfileImageForm';
 function UserProfilePage() {
   const user = useSelector((state) => state.generalStore.user);
 
@@ -32,7 +32,13 @@ function UserProfilePage() {
   return (
     <div className='profile_container container page'>
       <UserProfile user={user} images={images} setImages={setImages} />
-      <button onClick={handleStart}>Start Browsing!</button>
+      <div className='set-images'>
+        <ProfileImageForm setImages={setImages} images={images} />
+        <button onClick={handleStart} className='start-btn'>
+          Start Browsing!
+        </button>
+      </div>
+
       <ToastContainer position='top-right' />
     </div>
   );

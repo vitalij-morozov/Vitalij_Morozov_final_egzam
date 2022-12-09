@@ -4,7 +4,7 @@ import './styles/App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setUsers, setFilterSettings } from './store/generalStore';
+import { setUser, setUsers, setFilterSettings, setUserLikes, setUserMatches } from './store/generalStore';
 
 import io from 'socket.io-client';
 
@@ -16,9 +16,9 @@ import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import AuthPage from './pages/AuthPage';
 import UserProfilePage from './pages/UserProfilePage';
-import FilterPage from './pages/FilterPage';
 import LikesPage from './pages/LikesPage';
 import ChatPage from './pages/ChatPage';
+import MessagesPage from './pages/MessagesPage';
 
 const socket = io.connect('http://localhost:4000/');
 
@@ -35,7 +35,9 @@ function App() {
     if (filter) {
       http.get(`${url}/filtered/${filter.filterCity}&${filter.filterAge}&${filter.filterGender}`).then((data) => {
         console.log('filtered data', data);
-        const excludedFilterData = data.data.filter((fUser) => !fUser.likes.includes(user.secret));
+        const excludedFilterData = data.data.filter(
+          (fUser) => !fUser.likes.includes(user.secret) && fUser.secret !== user.secret
+        );
         dispatch(setUsers(excludedFilterData));
       });
     }
@@ -52,7 +54,7 @@ function App() {
         console.log('sessionUser ===', sessionUser);
       });
     }
-  }, []);
+  }, [dispatch, url]);
 
   useEffect(() => {
     const settings = localStorage.getItem('filterSettings');
@@ -60,7 +62,22 @@ function App() {
       dispatch(setFilterSettings(JSON.parse(settings)));
       console.log('JSON.parse(settings) ===', JSON.parse(settings));
     }
-  }, [user, dispatch]);
+  }, [user, dispatch, filter]);
+
+  useEffect(() => {
+    if (user) {
+      socket.emit('likes', user.liked);
+      socket.on('getMatches', (data) => {
+        console.log('get likes data', data);
+        if (!data.error) {
+          const filterLikes = data.data.filter((fUser) => !fUser.liked.includes(user.secret));
+          const filteredMatches = data.data.filter((fUser) => fUser.liked.includes(user.secret));
+          dispatch(setUserLikes(filterLikes));
+          dispatch(setUserMatches(filteredMatches));
+        }
+      });
+    }
+  }, [dispatch, user]);
 
   return (
     <div className='App'>
@@ -71,7 +88,7 @@ function App() {
           <Route path='/auth' element={!user && <AuthPage />} />
           <Route path='/profile' element={<UserProfilePage socket={socket} />} />
           <Route path='/profile/likes' element={<LikesPage socket={socket} />} />
-          <Route path='/filter' element={<FilterPage />} />
+          <Route path='/profile/messages' element={<MessagesPage socket={socket} />} />
           <Route path='/profile/chat/:toUser' element={<ChatPage socket={socket} />} />
         </Routes>
       </BrowserRouter>

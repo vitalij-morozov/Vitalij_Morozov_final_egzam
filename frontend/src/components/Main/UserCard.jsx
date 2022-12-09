@@ -3,11 +3,18 @@ import React from 'react';
 import CardCarousel from './CardCarousel';
 import CardButtons from './CardButtons';
 
-function UserCard({ user, socket }) {
+function UserCard({ user, socket, hadleDislikeButtonClick, hadleLikeButtonClick }) {
   return (
     <div className='card'>
       <CardCarousel user={user} />
-      <CardButtons userId={user.secret} socket={socket} />
+      {user && (
+        <CardButtons
+          userId={user.secret}
+          socket={socket}
+          hadleDislikeButtonClick={hadleDislikeButtonClick}
+          hadleLikeButtonClick={hadleLikeButtonClick}
+        />
+      )}
     </div>
   );
 }

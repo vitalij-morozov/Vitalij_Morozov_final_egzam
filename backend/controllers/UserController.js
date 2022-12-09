@@ -62,13 +62,21 @@ const loginUser = async (req, res) => {
 const updateUserImages = async (req, res) => {
   try {
     const { userId } = req.params;
-    // const images = req.body;
-    console.log('req.body ===', req.body);
     const user = await userSchema.findOneAndUpdate({ secret: userId }, { $push: { images: req.body.image } });
-    console.log('user ===', user);
     return res.status(201).json({ error: false, data: user });
   } catch (error) {
     return res.status(400).json({ error: true, data: [{ message: 'Incorrect data', error_info: error }] });
+  }
+};
+
+const removeUserImage = async (req, res) => {
+  try {
+    const { userId, image } = req.body;
+    console.log('removal req.body ===', req.body);
+    const updatedImages = await userSchema.findOneAndUpdate({ secret: userId }, { $pull: { images: image } });
+    return res.status(201).json({ error: false, data: updatedImages });
+  } catch (error) {
+    return res.status(400).json({ error: true, data: [{ message: 'Failed to remove image from images array' }] });
   }
 };
 
@@ -116,7 +124,6 @@ const updateUserLiked = async (request) => {
 
 const getUserLiked = async (request) => {
   const likedUsers = await userSchema.find({ secret: { $in: request } });
-  console.log('likedUsers ===', likedUsers);
   if (!likedUsers) return { error: true, data: [{ message: 'liked users not found' }] };
 
   return { error: false, data: likedUsers };
@@ -126,6 +133,7 @@ module.exports = {
   registerUser,
   loginUser,
   updateUserImages,
+  removeUserImage,
   getFilteredUsers,
   updateUserLikes,
   updateUserLiked,

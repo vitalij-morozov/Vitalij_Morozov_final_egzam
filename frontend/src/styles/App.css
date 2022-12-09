@@ -159,7 +159,17 @@ header .container {
 }
 
 /* MAIN CARD */
-.card {
+.card_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.filter-container {
+  width: 350px;
+}
+.card,
+.cards-fail-message {
   /* height: 600px;
   width: 480px; */
   display: flex;
@@ -169,7 +179,9 @@ header .container {
   color: #fff;
   box-shadow: 0px 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
-
+.cards-fail-message {
+  padding: 50px 30px;
+}
 .card_name {
   text-align: left;
   padding-left: 15px;
@@ -234,12 +246,15 @@ header .container {
 .profile_container {
   width: 100%;
   margin: 3% 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .user_profile {
   display: flex;
   justify-content: space-between;
   gap: 10%;
-  width: 90%;
+  /* width: 90%; */
 }
 .profile_form {
   width: 400px;
@@ -266,6 +281,15 @@ header .container {
   border-top-right-radius: 12px;
   background-size: cover;
   display: grid;
+}
+.set-images {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.start-btn {
 }
 .control-buttons {
   width: 100%;

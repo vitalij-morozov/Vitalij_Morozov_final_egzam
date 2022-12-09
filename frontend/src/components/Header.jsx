@@ -6,6 +6,7 @@ function Header() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.generalStore.user);
+  const userLikes = useSelector((state) => state.generalStore.userLikes);
 
   const { username } = user;
 
@@ -18,8 +19,8 @@ function Header() {
 
         <div className='profile' onClick={() => navigate('/profile')}>
           <h3 className='avatar'>{username.charAt(0)}</h3>
-
           <h2 className='header_username'>{username}</h2>
+          <span>Likes: {userLikes.length}</span>
         </div>
       </div>
     </header>

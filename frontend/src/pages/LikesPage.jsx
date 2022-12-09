@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Likes from '../components/Profile/UserLikes/Likes';
 import Matches from '../components/Profile/UserLikes/Matches';
-import { setUserLikes, setUserMatches } from '../store/generalStore';
+// import { setUserLikes, setUserMatches } from '../store/generalStore';
 
-function LikesPage({ socket }) {
+function LikesPage() {
   const [showComponent, setShowComponent] = useState('likes');
   const user = useSelector((state) => state.generalStore.user);
   const userLikes = useSelector((state) => state.generalStore.userLikes);
   const userMatches = useSelector((state) => state.generalStore.userMatches);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user) {
-      socket.emit('likes', user.liked);
-      socket.on('getMatches', (data) => {
-        console.log('get likes data', data);
-        if (!data.error) {
-          const filterLikes = data.data.filter((fUser) => !fUser.liked.includes(user.secret));
-          const filteredMatches = data.data.filter((fUser) => fUser.liked.includes(user.secret));
-          dispatch(setUserLikes(filterLikes));
-          dispatch(setUserMatches(filteredMatches));
-        }
-      });
-    }
-  }, [socket, user]);
+  // const dispatch = useDispatch();
 
   return (
     <div className='likes-page container page'>
