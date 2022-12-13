@@ -1,10 +1,13 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import UserProfile from '../components/Profile/UserProfile';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ImArrowRight } from 'react-icons/im';
+
 import ProfileImageForm from '../components/Profile/ProfileImageForm';
+import UserProfile from '../components/Profile/UserProfile';
+
 function UserProfilePage() {
   const user = useSelector((state) => state.generalStore.user);
 
@@ -24,11 +27,13 @@ function UserProfilePage() {
   };
 
   useEffect(() => {
+    if (!user) navigate('/auth');
+  }, [navigate, user]);
+
+  useEffect(() => {
     if (user && images.length === 0) setImages(user.images);
   }, [images.length, user]);
-  console.log('images ===', images);
 
-  console.log('profile ===', user);
   return (
     <div className='profile_container container page'>
       <UserProfile user={user} images={images} setImages={setImages} />
@@ -36,6 +41,9 @@ function UserProfilePage() {
         <ProfileImageForm setImages={setImages} images={images} />
         <button onClick={handleStart} className='start-btn'>
           Start Browsing!
+          <span>
+            <ImArrowRight />
+          </span>
         </button>
       </div>
 

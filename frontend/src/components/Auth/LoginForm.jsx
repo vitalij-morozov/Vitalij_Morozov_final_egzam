@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import http from '../../plugins/http';
 import { setUser } from '../../store/generalStore';
 
-function LoginForm({ setAuth, setErrors }) {
+function LoginForm({ setAuth, setErrors, socket }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,9 +29,12 @@ function LoginForm({ setAuth, setErrors }) {
       console.log('login', data);
       if (data.error) {
         setErrors(data.data);
+        return;
       }
       if (!data.error) {
         dispatch(setUser(data.data.user));
+        socket.emit('userLoggedIn', data.data.user.secret);
+
         sessionStorage.setItem('user', [data.data.userId, data.data.username]);
         if (stayLogged) {
           localStorage.setItem('user', [data.data.userId, data.data.username]);
@@ -39,7 +43,7 @@ function LoginForm({ setAuth, setErrors }) {
       }
     });
   };
-  console.log('stayLogged ===', stayLogged);
+
   return (
     <form className='auth-form login'>
       <h2 className='auth-from_title'>Sign In</h2>

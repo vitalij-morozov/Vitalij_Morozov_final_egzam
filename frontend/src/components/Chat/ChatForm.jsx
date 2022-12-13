@@ -8,9 +8,13 @@ function ChatForm({ socket, chatMessages, setChatMessages, receiver }) {
 
   const handleChatMessageSubmit = (e) => {
     e.preventDefault();
+    if (chatRef.current.value === '') {
+      return alert('Please enter a chat message');
+    }
     const message = {
       body: chatRef.current.value,
       sender: user.secret,
+      senderUsername: user.username,
       receiver: receiver,
       createdAt: new Date().toString(),
     };
@@ -21,11 +25,10 @@ function ChatForm({ socket, chatMessages, setChatMessages, receiver }) {
   };
   useEffect(() => {
     socket.on('getNewMessageData', (data) => {
-      console.log('getNewMessageData data ===', data);
-      setChatMessages((chatMessages) => [data, ...chatMessages]);
+      setChatMessages([data, ...chatMessages]);
     });
-  }, [socket]);
-  console.log('chatMessages ===', chatMessages);
+  }, [chatMessages, setChatMessages, socket]);
+
   return (
     <form className='chat-form'>
       <div className='input-container'>

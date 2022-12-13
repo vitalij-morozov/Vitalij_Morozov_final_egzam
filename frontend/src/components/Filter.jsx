@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { setFilterSettings } from '../store/generalStore';
 
 function Filter() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const genders = ['male', 'female'];
 
@@ -15,20 +13,15 @@ function Filter() {
   const [ageValue, setAgeValue] = useState(18);
   const [genderValue, setGenderValue] = useState(null);
 
-  console.log('ageRef.current.value ===', ageValue);
-  console.log('genderValue ===', genderValue);
-
   const handleFilter = () => {
     const settings = {
       filterCity: cityRef.current.value,
       filterGender: genderValue,
       filterAge: ageValue,
     };
-    console.log('settings ===', settings);
     dispatch(setFilterSettings(settings));
-    localStorage.removeItem('filterSettings');
-    localStorage.setItem('filterSettings', JSON.stringify(settings));
-    navigate('/');
+    window.sessionStorage.removeItem('filterSettings');
+    window.sessionStorage.setItem('filterSettings', JSON.stringify(settings));
   };
 
   return (
@@ -87,6 +80,7 @@ function Filter() {
           e.preventDefault();
           handleFilter();
         }}
+        className='filter-btn'
       >
         SAVE FILTER
       </button>

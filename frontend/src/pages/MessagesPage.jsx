@@ -12,11 +12,14 @@ function MessagesPage({ socket }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.emit('messages', { receiverId: user.secret });
+    user && socket.emit('messages', { receiverId: user.secret });
+  }, [socket, user]);
+
+  useEffect(() => {
     socket.on('getMessages', (data) => {
-      dispatch(setUserMessages(data.data));
+      dispatch(setUserMessages(data));
     });
-  }, []);
+  }, [dispatch, socket]);
 
   return (
     <div className='messages-page container page'>

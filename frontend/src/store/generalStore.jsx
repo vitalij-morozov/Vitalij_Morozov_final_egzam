@@ -27,6 +27,7 @@ export const generalSlice = createSlice({
     setUserMatches: (state, action) => {
       state.userMatches = action.payload;
     },
+
     setUserMessages: (state, action) => {
       state.userMessages = action.payload;
     },

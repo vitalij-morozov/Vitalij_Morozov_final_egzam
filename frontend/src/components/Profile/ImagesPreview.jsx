@@ -30,19 +30,29 @@ function ImagesPreview({ images, setImages }) {
 
   const handleImageRemoval = async () => {
     await http
-      .patch(`${url}/users/removeImage`, { userId: user.secret, image: images[counter] })
+      .post(`${url}/users/removeImage`, { userId: user.secret, image: images[counter] })
       .then((data) => {
         if (!data.error) {
-          console.log('data ===', data);
           setImages(images.filter((image) => image !== images[counter]));
+          setCounter(0);
         }
       })
       .catch((err) => console.error(err));
   };
+
   return (
     <div className='preview-container'>
-      {images.length > 0 ? (
-        <div className='preview-image' style={{ backgroundImage: `url(${images[counter]})` }}>
+      {
+        <div
+          className='preview-image'
+          style={{
+            backgroundImage: `url(${
+              images.length > 0
+                ? images[counter]
+                : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg'
+            })`,
+          }}
+        >
           <button className='delete-photo-btn' title='delete photo' onClick={handleImageRemoval}>
             <BsTrashFill />
           </button>
@@ -55,9 +65,7 @@ function ImagesPreview({ images, setImages }) {
             </button>
           </div>
         </div>
-      ) : (
-        <img src='https://img.freepik.com/free-icon/man_318-677829.jpg?w=2000' alt='default img' />
-      )}
+      }
     </div>
   );
 }

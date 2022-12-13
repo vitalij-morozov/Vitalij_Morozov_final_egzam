@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { HiOutlineArrowSmLeft, HiOutlineArrowSmRight } from 'react-icons/hi';
+import { HiChatAlt2 } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
 function UserLikesCarouselCard({ user, type }) {
@@ -40,9 +41,18 @@ function UserLikesCarouselCard({ user, type }) {
       </div>
 
       <div className='card_info'>
-        <h2 className='card_name'>{`${username}, ${age}, ${city}`}</h2>
+        <h2 className='card_name'>{username}</h2>
+        <span className='card_age'>{age}</span>
+        <span className='card_city'>{city}</span>
       </div>
-      {type === 'matches' && <button onClick={() => navigate(`/profile/chat/${secret}`)}>Start Chatting</button>}
+      {type === 'matches' && (
+        <button onClick={() => navigate(`/profile/chat/${secret}`)} className='match-chat-btn'>
+          Start Chatting
+          <span>
+            <HiChatAlt2 />
+          </span>
+        </button>
+      )}
     </div>
   );
 }

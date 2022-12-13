@@ -13,11 +13,9 @@ function ProfileImageForm({ images, setImages }) {
   const handleAddingImages = (e) => {
     e.preventDefault();
     const img = imageRef.current.value;
-    console.log('img ===', img);
     if (!img) return alert('Please enter an image URL');
     setImages([img, ...images]);
     http.patch(`${url}/users/${user.secret}`, { image: img }).then((data) => {
-      console.log('patch data ===', data);
       dispatch(setUser(data.data));
     });
     imageRef.current.value = '';
@@ -25,7 +23,7 @@ function ProfileImageForm({ images, setImages }) {
 
   return (
     <form className='profile_form'>
-      <h4>You shold have at least two images: </h4>
+      <h4>You should have at least two images: </h4>
       <div className='input-container'>
         <input ref={imageRef} type='url' name='image1' placeholder='Enter URL of an image' required />
       </div>

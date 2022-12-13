@@ -1,7 +1,6 @@
 const userSchema = require('../schemas/UserSchema');
 const bcrypt = require('bcrypt');
 const { uid } = require('uid');
-const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
   const { username, password1: password, city, age, gender } = req.body;
@@ -13,25 +12,15 @@ const registerUser = async (req, res) => {
     images: [],
     likes: [],
     liked: [],
+    dislikes: [],
     city: city,
     gender: gender,
     age: age,
     secret: userId,
   };
   const newUser = new userSchema(userObject);
-  console.log('newUser ===', newUser);
+
   await newUser.save();
-  console.log('userObject ===', userObject);
-  // const token = jwt.sign(
-  //   {
-  //     alg: 'secretttt',
-  //     typ: 'JWT',
-  //   },
-  //   { user: newUser },
-  //   {
-  //     expiresIn: 24 * 60,
-  //   }
-  // );
 
   if (!newUser) {
     return res.status(400).json({ error: true, data: [{ message: 'Error in user registration' }] });
@@ -45,9 +34,7 @@ const loginUser = async (req, res) => {
   try {
     const { username } = req.body;
     const user = await userSchema.findOne({ username });
-    // const token = jwt.sign(user, username, {
-    //   expiresIn: 60,
-    // });
+
     const success = {
       error: false,
       message: 'Login successful',
@@ -72,61 +59,81 @@ const updateUserImages = async (req, res) => {
 const removeUserImage = async (req, res) => {
   try {
     const { userId, image } = req.body;
-    console.log('removal req.body ===', req.body);
     const updatedImages = await userSchema.findOneAndUpdate({ secret: userId }, { $pull: { images: image } });
     return res.status(201).json({ error: false, data: updatedImages });
   } catch (error) {
-    return res.status(400).json({ error: true, data: [{ message: 'Failed to remove image from images array' }] });
+    return res
+      .status(400)
+      .json({ error: true, data: [{ message: 'Failed to remove image from images array', error_info: error }] });
   }
 };
 
 const getFilteredUsers = async (req, res) => {
-  const { city, age, gender } = req.params;
-  console.log('req.params ===', req.params);
-  const filteredUsers = await userSchema.find({
-    city: city,
-    gender: gender,
-    age: age,
-  });
-  console.log('filteredUsers ===', filteredUsers);
-
-  if (!filteredUsers) return res.status(400).json({ error: true, data: [{ message: 'No users found' }] });
-  return res.status(200).json({ error: false, message: 'Ok', data: filteredUsers });
+  try {
+    const { city, age, gender } = req.params;
+    const filteredUsers = await userSchema.find({
+      city: city,
+      gender: gender,
+      age: age,
+      'images.1': { $exists: true },
+    });
+    return res.status(200).json({ error: false, message: 'Ok', data: filteredUsers });
+  } catch (error) {
+    return res.status(400).json({ error: true, data: [{ message: 'No users found', error_info: error }] });
+  }
 };
 
-const getUserById = async (req, res) => {
-  const { userId } = req.params;
-
-  const user = await userSchema.findOne({ secret: userId });
-
-  if (!user) return res.status(400).json({ error: true, data: [{ message: 'User not found' }] });
-
-  return res.status(200).json({ error: false, data: user });
+const getUserById = async (request) => {
+  try {
+    const user = await userSchema.findOne({ secret: request });
+    return user;
+  } catch (error) {
+    if (!user) return { error: true, data: [{ message: 'User not found', error_info: error }] };
+  }
 };
 
 const updateUserLikes = async (request) => {
-  const { userWhoLikes, userWhoIsLiked } = request;
-
-  const updatedUser = await userSchema.findOneAndUpdate({ secret: userWhoIsLiked }, { $push: { likes: userWhoLikes } });
-
-  if (!updatedUser) return { error: true, data: [{ message: 'Failed to update user likes' }] };
-
-  return { error: false, data: updatedUser };
+  try {
+    const { userWhoLikes, userWhoIsLiked } = request;
+    const updatedUser = await userSchema.findOneAndUpdate(
+      { secret: userWhoIsLiked },
+      { $push: { likes: userWhoLikes } }
+    );
+    return { error: false, data: updatedUser };
+  } catch (error) {
+    return { error: true, data: [{ message: 'Failed to update user likes', error_info: error }] };
+  }
 };
 
 const updateUserLiked = async (request) => {
-  const { userWhoLikes, userWhoIsLiked } = request;
-  console.log('request ===', request);
-  const updatedUser = await userSchema.findOneAndUpdate({ secret: userWhoLikes }, { $push: { liked: userWhoIsLiked } });
-  if (!updatedUser) return { error: true, data: [{ message: 'Failed to update user' }] };
-  return { error: false, data: updatedUser };
+  try {
+    const { userWhoLikes, userWhoIsLiked } = request;
+    const updatedUser = await userSchema.findOneAndUpdate(
+      { secret: userWhoLikes },
+      { $push: { liked: userWhoIsLiked } }
+    );
+    return { error: false, data: updatedUser };
+  } catch (error) {
+    return { error: true, data: [{ message: 'Failed to update user', error_info: error }] };
+  }
 };
 
 const getUserLiked = async (request) => {
-  const likedUsers = await userSchema.find({ secret: { $in: request } });
-  if (!likedUsers) return { error: true, data: [{ message: 'liked users not found' }] };
+  try {
+    const likedUsers = await userSchema.find({ secret: { $in: request } });
+    return likedUsers;
+  } catch (error) {
+    return { error: true, data: [{ message: 'liked users not found', error_info: error }] };
+  }
+};
 
-  return { error: false, data: likedUsers };
+const getUserLikes = async (request) => {
+  try {
+    const likesUsers = await userSchema.find({ secret: { $in: request } });
+    return likesUsers;
+  } catch (error) {
+    return { error: true, data: [{ message: 'likes users not found', error_info: error }] };
+  }
 };
 
 module.exports = {
@@ -139,4 +146,5 @@ module.exports = {
   updateUserLiked,
   getUserById,
   getUserLiked,
+  getUserLikes,
 };

@@ -12,8 +12,8 @@ function ChatPage({ socket }) {
   const [chatMessages, setChatMessages] = useState([]);
 
   useEffect(() => {
-    socket.emit('chatMessages', { senderId: user.secret, receiverId: toUser });
-  }, []);
+    user && socket.emit('chatMessages', { senderId: user.secret, receiverId: toUser });
+  }, [socket, toUser, user]);
 
   useEffect(() => {
     socket.on('getChatMessages', (data) => {

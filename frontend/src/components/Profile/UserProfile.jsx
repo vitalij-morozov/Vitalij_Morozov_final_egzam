@@ -1,7 +1,7 @@
 import React from 'react';
-// import ProfileImageForm from './ProfileImageForm';
 import ImagesPreview from './ImagesPreview';
 import { Link } from 'react-router-dom';
+
 function UserProfile({ user, images, setImages }) {
   return (
     user && (
@@ -11,11 +11,12 @@ function UserProfile({ user, images, setImages }) {
             <ImagesPreview images={images} setImages={setImages} />
           </div>
           <h2 className='profile_username'>{user.username}</h2>
-          <Link to='/profile/messages'>
-            Messages <span className='value'>0</span>
+          <Link to='/profile/messages' className='profile_link'>
+            My Messages
           </Link>
-          <Link to='/profile/likes'>
-            Likes (<span className='value'>0</span>) & Matches (<span className='value'>0</span>)
+          <Link to='/profile/likes' className='profile_link'>
+            Liked By Me (<span className='value'>{user.liked.length}</span>) & Liked Me (
+            <span className='value'>{user.likes.length}</span>)
           </Link>
         </div>
       </div>

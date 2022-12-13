@@ -9,22 +9,14 @@ function MainPage({ socket }) {
 
   const [counter, setCounter] = useState(0);
   const [showCards, setShowCards] = useState(true);
-  const [showFilter, setShowFilter] = useState(false);
 
   const user = useSelector((state) => state.generalStore.user);
   const users = useSelector((state) => state.generalStore.users);
-  const filter = useSelector((state) => state.generalStore.filterSettings);
-
-  // const handleSwipe = () => {
-  //   setCounter(counter + 1);
-  //   if (counter === users.length) {
-  //   }
-  // };
 
   const hadleLikeButtonClick = () => {
     setCounter(counter + 1);
     setShowCards(true);
-    if (counter === users.length) {
+    if (counter === users.length - 1) {
       setCounter(0);
       setShowCards(false);
     }
@@ -33,29 +25,27 @@ function MainPage({ socket }) {
   const hadleDislikeButtonClick = () => {
     setCounter(counter + 1);
     setShowCards(true);
-    if (counter === users.length) {
+    if (counter === users.length - 1) {
       setCounter(0);
       setShowCards(false);
     }
   };
-
-  console.log('user ===', user);
 
   useEffect(() => {
     const sUser = sessionStorage.getItem('user');
     const lUser = localStorage.getItem('user');
     if (!sUser && !lUser) navigate('/auth');
   }, [navigate, user]);
-  console.log('users ===', users);
+
   return (
     <div className='card_container page'>
       <div className='filter-container'>
-        {!showFilter ? <button onClick={() => setShowFilter(!showFilter)}>FILTER</button> : ''}
-        {showFilter ? <Filter /> : ''}
+        <Filter />
       </div>
 
-      {users.length > 0 && users.length !== counter ? (
+      {users.length > 0 ? (
         <UserCard
+          show={showCards}
           user={users[counter]}
           hadleLikeButtonClick={hadleLikeButtonClick}
           hadleDislikeButtonClick={hadleDislikeButtonClick}

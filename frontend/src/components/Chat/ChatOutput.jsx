@@ -6,7 +6,7 @@ function ChatOutput({ chatMessages }) {
     <div className='chat-output'>
       {chatMessages.length > 0 ? (
         chatMessages
-          .sort((a, b) => a.createdAt - b.createdAt)
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
           .map((message, index) => <SingleChatMessage key={index} message={message} />)
       ) : (
         <h2>No Messages Yet</h2>

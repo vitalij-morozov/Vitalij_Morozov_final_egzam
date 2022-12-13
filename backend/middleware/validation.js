@@ -41,7 +41,7 @@ const loginValidation = async (req, res, next) => {
 
   try {
     const validationResult = await joiSchema.validateAsync(req.body, { abortEarly: false });
-    if (!user) return res.status(400).json({ error: true, message: 'User not found' });
+    if (!user) return res.status(400).json({ error: true, data: [{ message: 'User not found' }] });
     const passCompare = await bcrypt.compare(password, user.password);
     if (!passCompare) return res.status(400).json({ error: true, message: 'Incorrect password or username' });
     next();

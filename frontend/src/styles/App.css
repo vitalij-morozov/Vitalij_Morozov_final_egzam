@@ -1,5 +1,4 @@
 /* ------GENERAL-------- */
-
 .App {
   text-align: center;
   display: flex;
@@ -18,34 +17,66 @@ label {
 
 .page {
   margin-top: 3%;
+  flex-wrap: wrap;
 }
 
 /* -----HEADER-------- */
 header {
-  background-color: #112b3c;
+  background: rgb(137, 204, 173);
+  background: linear-gradient(66deg, rgba(137, 204, 173, 1) 0%, rgba(17, 43, 60, 1) 74%);
   width: 100%;
   color: #fff;
 }
-
+h1 {
+  padding: 0;
+}
 header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .logo {
   padding: 15px 0;
+}
+.logo h1 {
   font-size: 2.5rem;
   cursor: pointer;
+  text-align: left;
 }
-
+.sub-logo {
+  font-size: 15px;
+  font-style: italic;
+}
+.log-out-btn {
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: tomato;
+  padding: 7px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+}
+.log-out-btn span {
+  font-size: 16px;
+}
+.header_link {
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: #489b74;
+  font-weight: 500;
+}
+.link_value {
+  color: #c2ded1;
+  font-weight: bold;
+}
 .profile {
   display: flex;
   gap: 15px;
   align-items: center;
   cursor: pointer;
 }
-
 .avatar {
   border-radius: 50%;
   border: 4px solid #c2ded1;
@@ -56,8 +87,14 @@ header .container {
   opacity: 0.8;
   width: 55px;
   height: 55px;
+  transition: all ease-in-out 0.3s;
 }
-/* AUTH FORMS */
+.avatar:hover {
+  border-color: #8accad;
+  color: #89ccad;
+}
+
+/*------- AUTH FORMS ---------*/
 .auth-container {
   display: flex;
   align-items: center;
@@ -66,7 +103,6 @@ header .container {
   width: 100%;
   position: relative;
 }
-
 .auth-error {
   padding: 25px;
   background-color: tomato;
@@ -93,9 +129,10 @@ header .container {
   color: #fff;
 }
 .auth-nav {
-  background-color: #112b3c;
+  background: rgb(137, 204, 173);
+  background: linear-gradient(66deg, rgba(137, 204, 173, 1) 0%, rgba(17, 43, 60, 1) 65%);
   color: #fff;
-  padding: 40px;
+  padding: 70px;
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -158,7 +195,7 @@ header .container {
   color: #c2ded1;
 }
 
-/* MAIN CARD */
+/*--------- MAIN CARD--------- */
 .card_container {
   display: flex;
   justify-content: space-between;
@@ -168,10 +205,13 @@ header .container {
 .filter-container {
   width: 350px;
 }
+#filter-city {
+  padding: 6px;
+  font-family: inherit;
+  outline: none;
+}
 .card,
 .cards-fail-message {
-  /* height: 600px;
-  width: 480px; */
   display: flex;
   flex-direction: column;
   background-color: #083852;
@@ -181,20 +221,23 @@ header .container {
 }
 .cards-fail-message {
   padding: 50px 30px;
+  width: 464px;
 }
 .card_name {
   text-align: left;
   padding-left: 15px;
   margin: 10px 0;
+  font-size: 1.8rem;
+  color: #89ccad;
+  text-shadow: 5px 1px 3px rgb(0, 0, 0);
 }
 .card_info {
   width: 350px;
   height: 500px;
   display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
+  text-shadow: 1px 1px 3px rgb(0, 0, 0);
 }
-
 .card_carousel {
   display: flex;
   align-items: center;
@@ -202,10 +245,9 @@ header .container {
   border-radius: 12px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background-position: center center;
+  background-position: top center;
   background-size: cover;
 }
-
 .carousel-btn {
   font-size: 45px;
   background-color: transparent;
@@ -213,33 +255,43 @@ header .container {
   align-items: center;
   border: none;
   color: #fff;
+  transition: color 0.2s ease;
 }
-
+.carousel-btn:hover {
+  color: #8accad;
+}
 .carousel-image {
   height: 100%;
 }
-
 .card_buttons {
   width: 100%;
   display: flex;
   justify-content: space-around;
   padding: 15px 0;
 }
-
 .card_btn {
-  font-size: 35px;
   background-color: transparent;
   border: none;
+  display: flex;
+  flex-direction: column-reverse;
+  transition: all 0.3s ease;
 }
+.card_btn:hover {
+  filter: contrast(60%);
+}
+.card_btn span {
+  font-size: 35px;
+}
+
 .card_btn.dislike {
   color: tomato;
 }
 .card_btn.like {
   color: lawngreen;
 }
-
 .selected-btn {
-  border-color: red;
+  background-color: #89ccad;
+  border-color: #89ccad;
 }
 
 /* ------PROFILE-------- */
@@ -247,36 +299,43 @@ header .container {
   width: 100%;
   margin: 3% 10%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
+  height: 100%;
 }
 .user_profile {
   display: flex;
   justify-content: space-between;
   gap: 10%;
-  /* width: 90%; */
 }
 .profile_form {
   width: 400px;
   background-color: #083852;
   display: flex;
   flex-direction: column;
-  padding: 35px 15px;
+  padding: 35px 25px;
   gap: 15px;
   color: #fff;
 }
+.profile_form h4 {
+  color: #c2ded1;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
 .profile_form input {
   width: 100%;
-  padding: 6px;
+  padding: 8px;
+  background-color: #dfe7e3;
+  border: 2px solid #8accad;
 }
 .preview-container {
   display: flex;
-  width: 360px;
+  width: 400px;
   height: 400px;
 }
 .preview-image {
-  width: 400px;
-  background-position: center center;
+  width: 100%;
+  background-position: top center;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   background-size: cover;
@@ -290,6 +349,28 @@ header .container {
   align-items: flex-start;
 }
 .start-btn {
+  width: 100%;
+  margin-top: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  gap: 20px;
+  color: #175781;
+  font-weight: 700;
+  background-color: #8accad;
+  border: 2px solid #8accad;
+  padding: 5px;
+  transition: all 0.3s ease-in;
+}
+.start-btn span {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+}
+.start-btn:hover {
+  border-color: #175781;
+  filter: brightness(95%);
 }
 .control-buttons {
   width: 100%;
@@ -302,6 +383,10 @@ header .container {
   border: none;
   font-size: 3rem;
   color: #fff;
+  transition: color 0.3s ease;
+}
+.control-buttons button:hover {
+  color: #89ccad;
 }
 .delete-photo-btn {
   align-self: flex-start;
@@ -312,14 +397,23 @@ header .container {
   border: none;
   font-size: 25px;
   color: tomato;
+  transition: color 0.2s ease;
+}
+.delete-photo-btn:hover {
+  color: red;
 }
 .profile_form-btn {
   background-color: #89ccad;
   border: 2px solid #89ccad;
-  padding: 5px;
+  padding: 7px;
   font-size: 15px;
   font-weight: 700;
   color: #083852;
+  transition: all 0.3s ease-in-out;
+}
+.profile_form-btn:hover {
+  background-color: transparent;
+  color: #89ccad;
 }
 .user-info {
   display: flex;
@@ -330,8 +424,23 @@ header .container {
   border-radius: 12px;
   background-color: #89ccad;
 }
-
-/* -----LIKES PAGE------ */
+.profile_username {
+  color: #175781;
+  font-size: 1.7rem;
+}
+.profile_link {
+  font-weight: 700;
+  color: #112b3c;
+  transition: all 0.3s ease;
+}
+.profile_link:hover {
+  text-decoration: underline;
+  color: #175781;
+}
+.profile_link .value {
+  color: #db1fa3;
+}
+/* ------LIKES PAGE------ */
 .likes-page {
   width: 100%;
   display: flex;
@@ -352,34 +461,63 @@ header .container {
 .likes-matches {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 .like-page_selected {
   color: #083852;
   background-color: #89ccad;
 }
-.card_buttons {
+.card_carousel.small .card_buttons {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  height: 100%;
 }
 .card_carousel.small {
-  width: 250px;
+  width: 270px;
   height: 400px;
   flex-direction: column;
-
   background-position: center;
   background-size: cover;
 }
 .card_carousel.small .card_info {
-  height: 100%;
-  color: #ffffff;
+  height: 50px;
+  color: #8accad;
   font-size: 1rem;
   width: 100%;
+  display: flex;
+  gap: 5px;
+  padding: 0 5px;
+  padding-bottom: 20px;
+  text-shadow: 1px 1px 3px rgb(0, 0, 0);
+}
+.card_carousel.small h2 {
+  padding: 0;
+  margin: 0;
+}
+.card_carousel.small .card_name {
+  color: #8accad;
+  font-size: 20px;
+}
+.card_city {
+  text-transform: capitalize;
+}
+.match-chat-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #8accad;
+  border: none;
+  color: #175781;
+}
+.match-chat-btn span {
+  font-size: 1.5rem;
 }
 
-/* ------FILTER------- */
-
+/* -------FILTER------- */
 .filter-form {
   padding: 25px 40px;
   border: 2px solid #083852;
@@ -390,7 +528,6 @@ header .container {
   flex-direction: column;
   gap: 10px;
 }
-
 .filter-form .input-container {
   border: 1px solid #112b3c;
   padding: 10px 20px;
@@ -403,27 +540,144 @@ header .container {
   display: flex;
   gap: 2px;
 }
-
 .select-gender-btn {
   width: 50%;
   font-weight: 700;
   font-size: 14px;
   padding: 5px 0;
+  text-transform: uppercase;
+}
+.filter-btn {
+  background-color: #489b74;
+  font-weight: bold;
+  padding: 7px;
+  border: 2px solid #489b74;
+  font-size: 1rem;
 }
 
 /* ----CHAT PAGE----- */
 .chat-container {
-  width: 360px;
+  width: 560px;
   border: 2px solid #112b3c;
 }
-
 .chat-output {
-  background-color: #fff;
+  background-color: rgb(224, 219, 219);
   height: 400px;
-  margin-bottom: 10px;
+  overflow-y: scroll;
+  padding: 10px 20px;
 }
-
 .chat-form textarea {
   font-family: inherit;
   width: 100%;
+}
+.chat-message-container {
+  width: 100%;
+  display: grid;
+}
+.chat-message {
+  border-bottom: 1px solid lightgray;
+  text-align: left;
+  padding: 5px;
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 7px;
+}
+.chat-message-date {
+  font-size: 12px;
+  font-style: italic;
+}
+.chat-message-body {
+  margin: 5px 0;
+}
+.chat-form {
+  display: grid;
+  background-color: #083852;
+}
+.chat-form textarea {
+  width: 70%;
+  margin: 10px 0;
+  font-family: inherit;
+  outline: none;
+  background-color: #ddfdee;
+  font-size: 1rem;
+  resize: none;
+}
+.chat-form button {
+  justify-self: center;
+  margin-bottom: 10px;
+  padding: 8px 25px;
+  font-weight: 700;
+  background-color: #489b74;
+  border: 2px solid #489b74;
+}
+
+/* ----MESSAGES PAGE----- */
+.messages-container {
+  background: rgb(17, 43, 60);
+  background: linear-gradient(162deg, rgba(17, 43, 60, 1) 32%, rgba(137, 204, 173, 1) 69%);
+  padding: 30px;
+  height: 80vh;
+  overflow-y: scroll;
+}
+.message {
+  width: 400px;
+  background-color: #8accad;
+  display: flex;
+  text-align: left;
+  padding: 25px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border: 2px solid #083852;
+  border-radius: 12px;
+}
+.message-sender {
+  width: 35%;
+  padding-left: 5px;
+  font-size: 1rem;
+  font-style: italic;
+}
+.message-body {
+  width: 100%;
+}
+
+@media only screen and (max-width: 980px) {
+  .sub-logo {
+    display: none;
+  }
+  header .container {
+    gap: 0;
+  }
+  .logo {
+    padding: 10px 0;
+  }
+}
+
+@media only screen and (max-width: 890px) {
+  .container,
+  .page {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+@media only screen and (max-width: 750px) {
+  header span {
+    display: none;
+  }
+  .header_username {
+    display: none;
+  }
+  .card {
+    margin: 0 5px;
+  }
+  .card_info {
+    width: 250px;
+  }
+  .logo {
+    padding: 0;
+  }
+  header {
+    padding-bottom: 10px;
+  }
 }
